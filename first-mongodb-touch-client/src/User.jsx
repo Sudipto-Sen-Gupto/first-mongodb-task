@@ -1,4 +1,5 @@
 import React, { use, useState } from 'react';
+import { Link } from 'react-router';
 
 const User = ({data}) => {
     const datum=use(data);
@@ -29,8 +30,19 @@ const User = ({data}) => {
 
     });
   }
+
+  const handleClick=(id)=>{
+    fetch(`http://localhost:3000/user/${id}`,{
+        method:'DELETE'
+    }).then(res=>res.json()).then(data=>{console.log(data)
+        const remaining=dip.filter(f=>f._id != id);
+        setDip(remaining)
+    });
+    console.log("userId",id);
+  }
     return (
         <div>
+            <h1>{dip.length}</h1>
              <form onSubmit={handleSubmit}>
         <label htmlFor="">Name</label><br />
         <input type="text" name="name" id="" /><br />
@@ -42,7 +54,7 @@ const User = ({data}) => {
       <p>--------------------------</p>
       <div>
         {
-            dip.map(d=><div key={d.id} style={{display:'flex'}}><p>{d.name} : </p><p>{d.email}</p></div>)
+            dip.map(d=><div key={d._id} style={{display:'flex ' ,marginLeft:'20px'}}><p>{d.name} : </p><p>{d.email}</p> <Link to={`/user/${d._id}`}><p>detail</p> </Link> <Link to={`/update/${d._id}`}><p>  update</p></Link><button onClick={()=>handleClick(d._id)}>x</button>  </div>)
         }
       </div>
         </div>
